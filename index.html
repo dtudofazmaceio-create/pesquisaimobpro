@@ -274,6 +274,26 @@
             box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
         }
 
+        .btn-whatsapp-small {
+            background: var(--whatsapp);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-whatsapp-small:hover {
+            background: #128C7E;
+            transform: scale(1.1);
+        }
+
         .data-list {
             margin-top: 30px;
         }
@@ -325,6 +345,12 @@
 
         .data-details p {
             margin-bottom: 8px;
+        }
+
+        .data-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
 
         .empty-state {
@@ -483,6 +509,10 @@
             
             .logo-text h1 {
                 font-size: 1.7rem;
+            }
+            
+            .data-actions {
+                flex-direction: column;
             }
         }
 
@@ -1131,6 +1161,25 @@
             });
         }
 
+        // Obter um registro pelo ID
+        async function getDataById(id) {
+            if (!db) await initDB();
+            
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], "readonly");
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.get(id);
+                
+                request.onsuccess = () => {
+                    resolve(request.result);
+                };
+                
+                request.onerror = () => {
+                    reject(request.error);
+                };
+            });
+        }
+
         // Excluir um registro pelo ID
         async function deleteData(id) {
             if (!db) await initDB();
@@ -1219,6 +1268,174 @@
             }
         }
 
+        // Função para formatar dados para mensagem do WhatsApp
+        function formatDataForWhatsApp(data) {
+            // Mapear valores para textos mais amigáveis
+            const employmentMap = {
+                'carteira_assinada': 'Carteira Assinada',
+                'autonomo': 'Autônomo',
+                'servidor_publico': 'Servidor Público',
+                'empresario': 'Empresário'
+            };
+            
+            const fgtsMap = {
+                'sim': 'Sim, já utilizei',
+                'nao': 'Não, nunca utilizei',
+                'nao_sei': 'Não sei o que é FGTS'
+            };
+            
+            const yesNoMap = {
+                'sim': 'Sim',
+                'nao': 'Não'
+            };
+            
+            // Construir mensagem
+            let message = `*Pesquisa Imobiliária - Resumo da Pesquisa*\n\n`;
+            message += `*Nome:* ${data.name}\n`;
+            message += `*Telefone:* ${data.phone}\n`;
+            if (data.cpf) message += `*CPF:* ${data.cpf}\n`;
+            message += `\n`;
+            
+            message += `*Situação Profissional:* ${employmentMap[data.employment] || 'Não informado'}\n`;
+            if (data.employment === 'carteira_assinada' && data.employmentTime) {
+                message += `*Tempo de Carteira:* ${data.employmentTime}\n`;
+            }
+            message += `*Renda Mensal:* ${data.income}\n`;
+            
+            if (data.employment === 'carteira_assinada' && data.usedFGTS) {
+                message += `*Usou FGTS:* ${fgtsMap[data.usedFGTS] || 'Não informado'}\n`;
+            }
+            
+            message += `*Interesse em Avaliação:* ${yesNoMap[data.interestEvaluation] || 'Não informado'}\n`;
+            message += `*Possui Imóvel:* ${yesNoMap[data.hasProperty] || 'Não informado'}\n`;
+            message += `*Necessidades Especiais na Família:* ${yesNoMap[data.specialNeeds] || 'Não informado'}\n\n`;
+            
+            message += `*Casa dos Sonhos:*\n${data.dreamHouse.substring(0, 200)}${data.dreamHouse.length > 200 ? '...' : ''}\n\n`;
+            message += `*Localização Desejada:* ${data.location}\n`;
+            message += `*Profissão:* ${data.work}\n`;
+            message += `*Tamanho da Família:* ${data.familySize} pessoa(s)\n\n`;
+            
+            if (data.knowsWithout) {
+                message += `*Indicação:* ${data.knowsWithout}`;
+                if (data.knowsPhone) message += ` (${data.knowsPhone})`;
+                message += `\n\n`;
+            }
+            
+            message += `_Esta é uma pesquisa realizada para entender melhor as necessidades habitacionais._\n`;
+            message += `_Data da pesquisa: ${new Date(data.date).toLocaleDateString('pt-BR')}_`;
+            
+            return message;
+        }
+
+        // Função para enviar pesquisa por WhatsApp (usando dados salvos)
+        async function sendWhatsAppFromData(dataId) {
+            try {
+                // Obter dados pelo ID
+                const data = await getDataById(dataId);
+                
+                if (!data) {
+                    showMessage("Dados não encontrados!", "error");
+                    return;
+                }
+                
+                if (!data.phone) {
+                    showMessage("Não é possível enviar: número de telefone não informado!", "error");
+                    return;
+                }
+                
+                // Remover máscara do telefone
+                const cleanPhone = data.phone.replace(/\D/g, '');
+                
+                // Formatar mensagem
+                const message = formatDataForWhatsApp(data);
+                
+                // Codificar a mensagem para URL
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Criar link do WhatsApp
+                const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodedMessage}`;
+                
+                // Abrir WhatsApp em nova aba
+                window.open(whatsappUrl, '_blank');
+                
+                showMessage("Abrindo WhatsApp com o resumo da pesquisa...", "success");
+                
+            } catch (error) {
+                console.error("Erro ao enviar por WhatsApp:", error);
+                showMessage("Erro ao enviar pesquisa por WhatsApp. Tente novamente.", "error");
+            }
+        }
+
+        // Função para enviar pesquisa do formulário atual por WhatsApp
+        async function sendWhatsAppFromForm() {
+            const phoneInput = document.getElementById('phone');
+            const phone = phoneInput.value.trim();
+            
+            if (!phone) {
+                showMessage("Por favor, informe um telefone para enviar a pesquisa por WhatsApp.", "error");
+                phoneInput.focus();
+                return;
+            }
+            
+            // Remover máscara do telefone
+            const cleanPhone = phone.replace(/\D/g, '');
+            
+            // Obter dados do formulário
+            const name = document.getElementById('name').value.trim();
+            const employment = document.querySelector('input[name="employment"]:checked')?.value;
+            const employmentTime = document.getElementById('employmentTime').value.trim();
+            const income = document.getElementById('income').value.trim();
+            const usedFGTS = document.querySelector('input[name="usedFGTS"]:checked')?.value;
+            const interestEvaluation = document.querySelector('input[name="interestEvaluation"]:checked')?.value;
+            const hasProperty = document.querySelector('input[name="hasProperty"]:checked')?.value;
+            const specialNeeds = document.querySelector('input[name="specialNeeds"]:checked')?.value;
+            const dreamHouse = document.getElementById('dreamHouse').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const work = document.getElementById('work').value.trim();
+            const familySize = document.getElementById('familySize').value;
+            const knowsWithout = document.getElementById('knowsWithout').value.trim();
+            const knowsPhone = document.getElementById('knowsPhone').value.trim();
+            
+            if (!name) {
+                showMessage("Por favor, preencha o nome para enviar a pesquisa.", "error");
+                return;
+            }
+            
+            // Criar objeto com os dados
+            const formData = {
+                name,
+                phone,
+                employment,
+                employmentTime,
+                income,
+                usedFGTS,
+                interestEvaluation,
+                hasProperty,
+                specialNeeds,
+                dreamHouse,
+                location,
+                work,
+                familySize,
+                knowsWithout,
+                knowsPhone,
+                date: new Date().toISOString()
+            };
+            
+            // Formatar mensagem
+            const message = formatDataForWhatsApp(formData);
+            
+            // Codificar a mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Criar link do WhatsApp
+            const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodedMessage}`;
+            
+            // Abrir WhatsApp em nova aba
+            window.open(whatsappUrl, '_blank');
+            
+            showMessage("Abrindo WhatsApp com o resumo da pesquisa...", "success");
+        }
+
         // Carregar e exibir dados na lista
         async function loadData() {
             const data = await getAllData();
@@ -1233,6 +1450,9 @@
             }
             
             emptyState.classList.add("hidden");
+            
+            // Ordenar por data (mais recente primeiro)
+            data.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             data.forEach(item => {
                 // Criar badges para FGTS e Avaliação
@@ -1280,16 +1500,25 @@
                                 ${employmentBadge} ${fgtsBadge} ${evaluationBadge}
                             </div>
                         </div>
-                        <button class="delete-btn" data-id="${item.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="data-actions">
+                            <button class="btn-whatsapp-small" data-id="${item.id}" title="Enviar pesquisa por WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
+                            <button class="delete-btn" data-id="${item.id}" title="Excluir pesquisa">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="data-details">
-                        <p><strong><i class="fas fa-money-bill-wave"></i> Renda:</strong> ${item.income} | <strong><i class="fas fa-home"></i> Tem imóvel:</strong> ${item.hasProperty === 'sim' ? 'Sim ✅' : 'Não ❌'}</p>
+                        <p><strong><i class="fas fa-money-bill-wave"></i> Renda:</strong> ${item.income} | <strong><i class="fas fa-home"></i> Tem imóvel:</strong> ${item.hasProperty === 'sim' ? 'Sim ✅' : 'Não ❌'} | ${specialNeedsBadge}</p>
                         <p><strong><i class="fas fa-briefcase"></i> Trabalha com:</strong> ${item.work} ${item.employmentTime ? ' | <strong>Tempo de carteira:</strong> ' + item.employmentTime : ''}</p>
-                        <p><strong><i class="fas fa-users"></i> Família:</strong> ${item.familySize ? item.familySize + ' pessoas' : 'Não informado'} | ${specialNeedsBadge}</p>
+                        <p><strong><i class="fas fa-users"></i> Família:</strong> ${item.familySize ? item.familySize + ' pessoas' : 'Não informado'}</p>
                         <p><strong><i class="fas fa-star"></i> Casa dos sonhos:</strong> ${item.dreamHouse.substring(0, 120)}${item.dreamHouse.length > 120 ? '...' : ''}</p>
                         <p><strong><i class="fas fa-map-marker-alt"></i> Localização desejada:</strong> ${item.location}</p>
+                        ${item.knowsWithout ? `<p><strong><i class="fas fa-user-plus"></i> Indicação:</strong> ${item.knowsWithout} ${item.knowsPhone ? ' (' + item.knowsPhone + ')' : ''}</p>` : ''}
+                        <p style="font-size: 0.8rem; color: var(--gray); margin-top: 10px;">
+                            <i class="far fa-calendar"></i> Data: ${new Date(item.date).toLocaleDateString('pt-BR')} ${new Date(item.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
                     </div>
                 `;
                 
@@ -1306,6 +1535,14 @@
                         loadData();
                         loadStats();
                     }
+                });
+            });
+            
+            // Adicionar eventos aos botões do WhatsApp
+            document.querySelectorAll(".btn-whatsapp-small").forEach(button => {
+                button.addEventListener("click", async (e) => {
+                    const id = parseInt(e.currentTarget.getAttribute("data-id"));
+                    await sendWhatsAppFromData(id);
                 });
             });
         }
@@ -1434,96 +1671,6 @@
             return "R$ 0,00";
         }
 
-        // Função para enviar pesquisa por WhatsApp
-        async function sendWhatsApp() {
-            const phoneInput = document.getElementById('phone');
-            const phone = phoneInput.value.trim();
-            
-            if (!phone) {
-                showMessage("Por favor, informe um telefone para enviar a pesquisa por WhatsApp.", "error");
-                phoneInput.focus();
-                return;
-            }
-            
-            // Remover máscara do telefone
-            const cleanPhone = phone.replace(/\D/g, '');
-            
-            // Obter dados do formulário
-            const name = document.getElementById('name').value.trim();
-            const employment = document.querySelector('input[name="employment"]:checked')?.value;
-            const employmentTime = document.getElementById('employmentTime').value.trim();
-            const income = document.getElementById('income').value.trim();
-            const usedFGTS = document.querySelector('input[name="usedFGTS"]:checked')?.value;
-            const interestEvaluation = document.querySelector('input[name="interestEvaluation"]:checked')?.value;
-            const hasProperty = document.querySelector('input[name="hasProperty"]:checked')?.value;
-            const specialNeeds = document.querySelector('input[name="specialNeeds"]:checked')?.value;
-            const dreamHouse = document.getElementById('dreamHouse').value.trim();
-            const location = document.getElementById('location').value.trim();
-            const work = document.getElementById('work').value.trim();
-            const familySize = document.getElementById('familySize').value;
-            
-            if (!name) {
-                showMessage("Por favor, preencha o nome para enviar a pesquisa.", "error");
-                return;
-            }
-            
-            // Mapear valores para textos mais amigáveis
-            const employmentMap = {
-                'carteira_assinada': 'Carteira Assinada',
-                'autonomo': 'Autônomo',
-                'servidor_publico': 'Servidor Público',
-                'empresario': 'Empresário'
-            };
-            
-            const fgtsMap = {
-                'sim': 'Sim, já utilizei',
-                'nao': 'Não, nunca utilizei',
-                'nao_sei': 'Não sei o que é FGTS'
-            };
-            
-            const yesNoMap = {
-                'sim': 'Sim',
-                'nao': 'Não'
-            };
-            
-            // Construir mensagem
-            let message = `*Pesquisa Imobiliária - Resumo da Pesquisa*\n\n`;
-            message += `*Nome:* ${name}\n`;
-            message += `*Telefone:* ${phone}\n\n`;
-            
-            message += `*Situação Profissional:* ${employmentMap[employment] || 'Não informado'}\n`;
-            if (employment === 'carteira_assinada' && employmentTime) {
-                message += `*Tempo de Carteira:* ${employmentTime}\n`;
-            }
-            message += `*Renda Mensal:* ${income}\n`;
-            
-            if (employment === 'carteira_assinada' && usedFGTS) {
-                message += `*Usou FGTS:* ${fgtsMap[usedFGTS] || 'Não informado'}\n`;
-            }
-            
-            message += `*Interesse em Avaliação:* ${yesNoMap[interestEvaluation] || 'Não informado'}\n`;
-            message += `*Possui Imóvel:* ${yesNoMap[hasProperty] || 'Não informado'}\n`;
-            message += `*Necessidades Especiais na Família:* ${yesNoMap[specialNeeds] || 'Não informado'}\n\n`;
-            
-            message += `*Casa dos Sonhos:*\n${dreamHouse.substring(0, 200)}${dreamHouse.length > 200 ? '...' : ''}\n\n`;
-            message += `*Localização Desejada:* ${location}\n`;
-            message += `*Profissão:* ${work}\n`;
-            message += `*Tamanho da Família:* ${familySize} pessoa(s)\n\n`;
-            
-            message += `_Esta é uma pesquisa realizada para entender melhor as necessidades habitacionais._`;
-            
-            // Codificar a mensagem para URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Criar link do WhatsApp
-            const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodedMessage}`;
-            
-            // Abrir WhatsApp em nova aba
-            window.open(whatsappUrl, '_blank');
-            
-            showMessage("Abrindo WhatsApp com o resumo da pesquisa...", "success");
-        }
-
         // Exportar dados para JSON
         async function exportToJSON() {
             const data = await getAllData();
@@ -1550,7 +1697,7 @@
                 "ID", "Nome", "Telefone", "CPF", "Situação Profissional", "Tempo Carteira", 
                 "Usou FGTS", "Interesse Avaliação", "Tem Imóvel", "Necessidades Especiais",
                 "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos", "Localização", 
-                "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
+                "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre", "Data"
             ];
             
             // Converter dados para linhas CSV
@@ -1573,7 +1720,8 @@
                 `"${item.work}"`,
                 `"${item.familySize || ''}"`,
                 `"${item.family.replace(/"/g, '""')}"`,
-                `"${item.about.replace(/"/g, '""')}"`
+                `"${item.about.replace(/"/g, '""')}"`,
+                `"${new Date(item.date).toLocaleString('pt-BR')}"`
             ]);
             
             // Combinar cabeçalhos e dados
@@ -1602,7 +1750,7 @@
                 "ID", "Nome", "Telefone", "CPF", "Situação Profissional", "Tempo Carteira", 
                 "Usou FGTS", "Interesse Avaliação", "Tem Imóvel", "Necessidades Especiais",
                 "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos", "Localização", 
-                "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
+                "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre", "Data"
             ];
             
             const rows = data.map(item => [
@@ -1624,7 +1772,8 @@
                 item.work,
                 item.familySize || '',
                 item.family,
-                item.about
+                item.about,
+                new Date(item.date).toLocaleString('pt-BR')
             ]);
             
             // Criar conteúdo tabular para Excel
@@ -1871,8 +2020,8 @@
                 radio.addEventListener('change', toggleCPFField);
             });
             
-            // Configurar botão do WhatsApp
-            document.getElementById('send-whatsapp').addEventListener('click', sendWhatsApp);
+            // Configurar botão do WhatsApp no formulário
+            document.getElementById('send-whatsapp').addEventListener('click', sendWhatsAppFromForm);
             
             // Configurar envio do formulário
             document.getElementById('research-form').addEventListener('submit', async (e) => {
