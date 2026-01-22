@@ -42,7 +42,7 @@
         }
 
         .container {
-            max-width: 850px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -337,6 +337,13 @@
             display: none;
         }
 
+        .conditional-field {
+            animation: fadeIn 0.5s ease;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--light-gray);
+        }
+
         .status-message {
             padding: 18px;
             border-radius: var(--border-radius);
@@ -364,6 +371,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; transform: translateY(-10px); }
+            to { opacity: 1; max-height: 500px; transform: translateY(0); }
+        }
+
         .section-title {
             font-size: 1.4rem;
             color: var(--primary);
@@ -381,6 +393,32 @@
             width: 80px;
             height: 3px;
             background: var(--secondary);
+        }
+
+        .fgts-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(to right, #1E6B3A, #2E8B57);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .evaluation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
         }
 
         /* Responsividade */
@@ -593,6 +631,21 @@
             background: rgba(26, 44, 62, 0.7);
             border-radius: var(--border-radius);
         }
+
+        .info-note {
+            background: rgba(42, 92, 141, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--primary-dark);
+        }
+
+        .conditional-required::after {
+            content: " *";
+            color: var(--danger);
+        }
     </style>
 </head>
 <body>
@@ -642,19 +695,68 @@
                                 <input type="text" id="name" class="form-control" placeholder="Digite seu nome completo" required>
                             </div>
                             <div class="form-group">
-                                <label for="cpf" class="required">CPF</label>
-                                <input type="text" id="cpf" class="form-control" placeholder="000.000.000-00" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-row">
-                            <div class="form-group">
                                 <label for="phone" class="required">Telefone</label>
                                 <input type="tel" id="phone" class="form-control" placeholder="(11) 99999-9999" required>
                             </div>
+                        </div>
+
+                        <h3 class="section-title">
+                            <span class="property-icon"><i class="fas fa-money-check-alt"></i></span>
+                            Recursos Financeiros
+                        </h3>
+                        
+                        <div class="form-row">
                             <div class="form-group">
                                 <label for="income" class="required">Renda Mensal</label>
                                 <input type="text" id="income" class="form-control" placeholder="R$ 3.500,00" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="required">Você já utilizou o FGTS para compra de imóvel?</label>
+                                <div class="radio-group" id="fgts-group">
+                                    <label class="radio-option">
+                                        <input type="radio" name="usedFGTS" value="sim" required> 
+                                        <i class="fas fa-check-circle"></i> Sim, já utilizei
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="usedFGTS" value="nao" required> 
+                                        <i class="fas fa-times-circle"></i> Não, nunca utilizei
+                                    </label>
+                                    <label class="radio-option">
+                                        <input type="radio" name="usedFGTS" value="nao_sei" required> 
+                                        <i class="fas fa-question-circle"></i> Não sei o que é FGTS
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="section-title">
+                            <span class="property-icon"><i class="fas fa-clipboard-check"></i></span>
+                            Interesse em Avaliação
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label class="required">Tem interesse em fazer uma avaliação do seu perfil para financiamento imobiliário?</label>
+                            <div class="info-note">
+                                <i class="fas fa-info-circle"></i> Se selecionar "Sim", será necessário informar seu CPF para a avaliação.
+                            </div>
+                            <div class="radio-group" id="evaluation-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="interestEvaluation" value="sim" required> 
+                                    <i class="fas fa-thumbs-up"></i> Sim, tenho interesse
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="interestEvaluation" value="nao" required> 
+                                    <i class="fas fa-thumbs-down"></i> Não, não tenho interesse
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campo CPF condicional -->
+                        <div id="cpf-container" class="form-group conditional-field hidden">
+                            <label for="cpf" class="conditional-required">CPF (necessário para avaliação)</label>
+                            <input type="text" id="cpf" class="form-control" placeholder="000.000.000-00">
+                            <div class="info-note">
+                                <i class="fas fa-shield-alt"></i> Seu CPF será utilizado exclusivamente para avaliação de perfil de financiamento e será protegido de acordo com a LGPD.
                             </div>
                         </div>
 
@@ -855,6 +957,8 @@
                         objectStore.createIndex("phone", "phone", { unique: false });
                         objectStore.createIndex("cpf", "cpf", { unique: true });
                         objectStore.createIndex("hasProperty", "hasProperty", { unique: false });
+                        objectStore.createIndex("usedFGTS", "usedFGTS", { unique: false });
+                        objectStore.createIndex("interestEvaluation", "interestEvaluation", { unique: false });
                     }
                 };
             });
@@ -931,6 +1035,27 @@
             }, 4000);
         }
 
+        // Controlar a exibição do campo CPF baseado no interesse em avaliação
+        function toggleCPFField() {
+            const evaluationGroup = document.getElementById('evaluation-group');
+            const cpfContainer = document.getElementById('cpf-container');
+            const cpfInput = document.getElementById('cpf');
+            
+            const selectedEvaluation = evaluationGroup.querySelector('input[name="interestEvaluation"]:checked');
+            
+            if (selectedEvaluation && selectedEvaluation.value === 'sim') {
+                // Mostrar campo CPF com animação
+                cpfContainer.classList.remove('hidden');
+                cpfContainer.style.animation = 'slideDown 0.5s ease';
+                cpfInput.required = true;
+            } else {
+                // Esconder campo CPF
+                cpfContainer.classList.add('hidden');
+                cpfInput.required = false;
+                cpfInput.value = ''; // Limpar o valor
+            }
+        }
+
         // Carregar e exibir dados na lista
         async function loadData() {
             const data = await getAllData();
@@ -947,13 +1072,27 @@
             emptyState.classList.add("hidden");
             
             data.forEach(item => {
+                // Criar badges para FGTS e Avaliação
+                const fgtsBadge = item.usedFGTS === 'sim' 
+                    ? '<span class="fgts-badge"><i class="fas fa-check"></i> Usou FGTS</span>'
+                    : item.usedFGTS === 'nao'
+                    ? '<span style="color: var(--gray);"><i class="fas fa-times"></i> Não usou FGTS</span>'
+                    : '<span style="color: var(--gray);"><i class="fas fa-question"></i> Não sabe FGTS</span>';
+                
+                const evaluationBadge = item.interestEvaluation === 'sim'
+                    ? '<span class="evaluation-badge"><i class="fas fa-chart-line"></i> Interesse em avaliação</span>'
+                    : '<span style="color: var(--gray);"><i class="fas fa-ban"></i> Sem interesse</span>';
+                
                 const dataItem = document.createElement("div");
                 dataItem.className = "data-item";
                 dataItem.innerHTML = `
                     <div class="data-header">
                         <div>
                             <div class="data-name">${item.name}</div>
-                            <div class="data-phone">${item.phone} | CPF: ${item.cpf}</div>
+                            <div class="data-phone">${item.phone} ${item.cpf ? '| CPF: ' + item.cpf : ''}</div>
+                            <div style="margin-top: 8px; font-size: 0.85rem;">
+                                ${fgtsBadge} ${evaluationBadge}
+                            </div>
                         </div>
                         <button class="delete-btn" data-id="${item.id}">
                             <i class="fas fa-trash"></i>
@@ -1004,6 +1143,8 @@
             const total = data.length;
             const withProperty = data.filter(item => item.hasProperty === 'sim').length;
             const withoutProperty = total - withProperty;
+            const usedFGTS = data.filter(item => item.usedFGTS === 'sim').length;
+            const interestEvaluation = data.filter(item => item.interestEvaluation === 'sim').length;
             const avgFamilySize = data.reduce((sum, item) => sum + (parseInt(item.familySize) || 0), 0) / total;
             
             // Localizações mais mencionadas
@@ -1015,7 +1156,7 @@
                 }
             });
             
-            const topLocation = Object.keys(locations).reduce((a, b) => locations[a] > locations[b] ? a : b, '');
+            const topLocation = Object.keys(locations).reduce((a, b) => locations[a] > locations[b] ? a : b, 'Nenhuma');
             
             statsContainer.innerHTML = `
                 <div class="stat-card">
@@ -1031,12 +1172,20 @@
                     <div class="stat-label">Buscando imóvel</div>
                 </div>
                 <div class="stat-card">
+                    <div class="stat-value">${usedFGTS}</div>
+                    <div class="stat-label">Já usaram FGTS</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${interestEvaluation}</div>
+                    <div class="stat-label">Interesse em avaliação</div>
+                </div>
+                <div class="stat-card">
                     <div class="stat-value">${avgFamilySize.toFixed(1)}</div>
-                    <div class="stat-label">Média de pessoas/família</div>
+                    <div class="stat-label">Média pessoas/família</div>
                 </div>
                 <div class="stat-card" style="min-width: 100%;">
                     <div class="stat-label">Localização mais desejada</div>
-                    <div class="stat-value" style="font-size: 1.8rem;">${topLocation || 'Não identificada'}</div>
+                    <div class="stat-value" style="font-size: 1.8rem;">${topLocation}</div>
                 </div>
             `;
         }
@@ -1097,8 +1246,8 @@
             
             // Definir cabeçalhos
             const headers = [
-                "ID", "Nome", "Telefone", "CPF", "Tem Imóvel", 
-                "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos",
+                "ID", "Nome", "Telefone", "CPF", "Usou FGTS", "Interesse Avaliação",
+                "Tem Imóvel", "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos",
                 "Localização", "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
             ];
             
@@ -1107,7 +1256,9 @@
                 item.id,
                 `"${item.name}"`,
                 `"${item.phone}"`,
-                `"${item.cpf}"`,
+                `"${item.cpf || ''}"`,
+                `"${item.usedFGTS}"`,
+                `"${item.interestEvaluation}"`,
                 `"${item.hasProperty}"`,
                 `"${item.knowsWithout || ''}"`,
                 `"${item.knowsPhone || ''}"`,
@@ -1143,8 +1294,8 @@
             const data = await getAllData();
             
             const headers = [
-                "ID", "Nome", "Telefone", "CPF", "Tem Imóvel", 
-                "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos",
+                "ID", "Nome", "Telefone", "CPF", "Usou FGTS", "Interesse Avaliação",
+                "Tem Imóvel", "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos",
                 "Localização", "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
             ];
             
@@ -1152,7 +1303,9 @@
                 item.id,
                 item.name,
                 item.phone,
-                item.cpf,
+                item.cpf || '',
+                item.usedFGTS,
+                item.interestEvaluation,
                 item.hasProperty,
                 item.knowsWithout || '',
                 item.knowsPhone || '',
@@ -1203,6 +1356,12 @@
         async function exportToPDF() {
             const data = await getAllData();
             
+            // Calcular estatísticas para o relatório
+            const total = data.length;
+            const withProperty = data.filter(item => item.hasProperty === 'sim').length;
+            const usedFGTS = data.filter(item => item.usedFGTS === 'sim').length;
+            const interestEvaluation = data.filter(item => item.interestEvaluation === 'sim').length;
+            
             let pdfContent = `
                 <html>
                 <head>
@@ -1216,40 +1375,48 @@
                         th { background-color: #2A5C8D; color: white; }
                         tr:nth-child(even) { background-color: #f2f2f2; }
                         .summary { background-color: #F5F7FA; padding: 15px; border-radius: 8px; margin: 20px 0; }
+                        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 20px 0; }
+                        .stat-box { background: white; padding: 15px; border-radius: 8px; border-left: 5px solid #2A5C8D; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+                        .stat-value { font-size: 1.8rem; font-weight: bold; color: #2A5C8D; }
+                        .stat-label { color: #666; font-size: 0.9rem; }
                     </style>
                 </head>
                 <body>
                     <h1>Pesquisa Imobiliária - Relatório de Dados</h1>
                     <p><strong>Data de exportação:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
-                    <p><strong>Total de entrevistados:</strong> ${data.length}</p>
                     
                     <div class="summary">
                         <h2>Resumo Estatístico</h2>
-                        <p>Com base nos ${data.length} entrevistados:</p>
-                        <ul>
-                            <li>${data.filter(item => item.hasProperty === 'sim').length} já possuem imóvel próprio</li>
-                            <li>${data.filter(item => item.hasProperty === 'nao').length} estão buscando imóvel</li>
-                            <li>Localização mais desejada: ${Object.entries(
-                                data.reduce((acc, item) => {
-                                    if (item.location) {
-                                        const loc = item.location.toLowerCase().split(',')[0].trim();
-                                        acc[loc] = (acc[loc] || 0) + 1;
-                                    }
-                                    return acc;
-                                }, {})
-                            ).reduce((a, b) => a[1] > b[1] ? a : b, ['', 0])[0] || 'Não identificada'}</li>
-                        </ul>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value">${total}</div>
+                                <div class="stat-label">Total de Entrevistados</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${withProperty}</div>
+                                <div class="stat-label">Já possuem imóvel</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${usedFGTS}</div>
+                                <div class="stat-label">Já usaram FGTS</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${interestEvaluation}</div>
+                                <div class="stat-label">Interesse em avaliação</div>
+                            </div>
+                        </div>
                     </div>
                     
-                    <h2>Dados Detalhados</h2>
+                    <h2>Dados Detalhados dos Entrevistados</h2>
                     <table>
                         <tr>
                             <th>Nome</th>
                             <th>Telefone</th>
                             <th>CPF</th>
+                            <th>Usou FGTS</th>
+                            <th>Interesse Avaliação</th>
                             <th>Tem Imóvel</th>
                             <th>Renda</th>
-                            <th>Localização Desejada</th>
                         </tr>
             `;
             
@@ -1258,10 +1425,11 @@
                     <tr>
                         <td>${item.name}</td>
                         <td>${item.phone}</td>
-                        <td>${item.cpf}</td>
+                        <td>${item.cpf || 'Não informado'}</td>
+                        <td>${item.usedFGTS === 'sim' ? 'Sim' : item.usedFGTS === 'nao' ? 'Não' : 'Não sabe'}</td>
+                        <td>${item.interestEvaluation === 'sim' ? 'Sim' : 'Não'}</td>
                         <td>${item.hasProperty === 'sim' ? 'Sim' : 'Não'}</td>
                         <td>${item.income}</td>
-                        <td>${item.location}</td>
                     </tr>
                 `;
             });
@@ -1355,15 +1523,42 @@
                 e.target.value = formatCurrency(value);
             });
             
+            // Configurar evento para mostrar/ocultar CPF baseado no interesse em avaliação
+            document.querySelectorAll('input[name="interestEvaluation"]').forEach(radio => {
+                radio.addEventListener('change', toggleCPFField);
+            });
+            
             // Configurar envio do formulário
             document.getElementById('research-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                
+                // Validar se CPF é necessário e foi preenchido
+                const interestEvaluation = document.querySelector('input[name="interestEvaluation"]:checked');
+                const cpfInput = document.getElementById('cpf');
+                
+                if (interestEvaluation && interestEvaluation.value === 'sim' && !cpfInput.value.trim()) {
+                    showMessage("Por favor, informe seu CPF para prosseguir com a avaliação.", "error");
+                    cpfInput.focus();
+                    return;
+                }
+                
+                // Validar formato do CPF se fornecido
+                if (cpfInput.value.trim()) {
+                    const cpfValue = cpfInput.value.replace(/\D/g, '');
+                    if (cpfValue.length !== 11) {
+                        showMessage("CPF inválido. Deve conter 11 dígitos.", "error");
+                        cpfInput.focus();
+                        return;
+                    }
+                }
                 
                 // Coletar dados do formulário
                 const formData = {
                     name: document.getElementById('name').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
-                    cpf: document.getElementById('cpf').value.trim(),
+                    cpf: cpfInput.value.trim(),
+                    usedFGTS: document.querySelector('input[name="usedFGTS"]:checked').value,
+                    interestEvaluation: interestEvaluation.value,
                     hasProperty: document.querySelector('input[name="hasProperty"]:checked').value,
                     knowsWithout: document.getElementById('knowsWithout').value.trim(),
                     knowsPhone: document.getElementById('knowsPhone').value.trim(),
@@ -1387,6 +1582,10 @@
                     // Limpar formulário
                     e.target.reset();
                     
+                    // Resetar campo CPF
+                    const cpfContainer = document.getElementById('cpf-container');
+                    cpfContainer.classList.add('hidden');
+                    
                     // Atualizar a lista de dados e estatísticas
                     await loadData();
                     await loadStats();
@@ -1409,6 +1608,9 @@
             document.getElementById('clear-form').addEventListener('click', () => {
                 if (confirm("Tem certeza que deseja limpar todos os campos do formulário?")) {
                     document.getElementById('research-form').reset();
+                    // Esconder campo CPF ao limpar
+                    const cpfContainer = document.getElementById('cpf-container');
+                    cpfContainer.classList.add('hidden');
                     showMessage("Formulário limpo com sucesso!", "success");
                 }
             });
