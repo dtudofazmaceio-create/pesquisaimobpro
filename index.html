@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -28,6 +27,8 @@
             --light-gray: #E8EDF3;
             --danger: #E63946;
             --whatsapp: #25D366;
+            --info: #17A2B8;
+            --warning: #FFC107;
             --border-radius: 12px;
             --shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
@@ -274,6 +275,30 @@
             box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
         }
 
+        .btn-info {
+            background: linear-gradient(to right, var(--info), #5BC0DE);
+            color: white;
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(to right, #138496, var(--info));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(23, 162, 184, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(to right, var(--warning), #FFD700);
+            color: var(--dark);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(to right, #E0A800, var(--warning));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(255, 193, 7, 0.4);
+        }
+
         .btn-whatsapp-small {
             background: var(--whatsapp);
             color: white;
@@ -403,6 +428,18 @@
             background-color: rgba(230, 57, 70, 0.15);
             color: var(--danger);
             border-left-color: var(--danger);
+        }
+
+        .warning {
+            background-color: rgba(255, 193, 7, 0.15);
+            color: #856404;
+            border-left-color: var(--warning);
+        }
+
+        .info {
+            background-color: rgba(23, 162, 184, 0.15);
+            color: #0C5460;
+            border-left-color: var(--info);
         }
 
         @keyframes fadeIn {
@@ -640,6 +677,181 @@
             border: 2px dashed var(--primary-light);
         }
 
+        .backup-container {
+            margin-top: 30px;
+        }
+
+        .backup-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .backup-btn {
+            padding: 14px 22px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            border: 2px solid;
+            flex: 1;
+            min-width: 180px;
+            justify-content: center;
+        }
+
+        .backup-export {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .backup-export:hover {
+            background: var(--success);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(76, 175, 80, 0.25);
+        }
+
+        .backup-import {
+            border-color: var(--info);
+            color: var(--info);
+        }
+
+        .backup-import:hover {
+            background: var(--info);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(23, 162, 184, 0.25);
+        }
+
+        .backup-restore {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .backup-restore:hover {
+            background: var(--warning);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(255, 193, 7, 0.25);
+        }
+
+        .backup-clear {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .backup-clear:hover {
+            background: var(--danger);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(230, 57, 70, 0.25);
+        }
+
+        .file-input-container {
+            margin: 20px 0;
+            padding: 20px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            border: 2px dashed var(--primary-light);
+            text-align: center;
+        }
+
+        .file-input-label {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .file-input-label:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .backup-info {
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid var(--info);
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .backup-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .backup-success {
+            background: rgba(76, 175, 80, 0.1);
+            border-left: 4px solid var(--success);
+            padding: 12px 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        .backup-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .backup-stat {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-top: 5px solid var(--info);
+        }
+
+        .backup-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .backup-stat-label {
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
         .stats-container {
             display: flex;
             justify-content: space-around;
@@ -739,6 +951,60 @@
             outline: none;
             box-shadow: 0 0 0 4px rgba(42, 92, 141, 0.15);
         }
+
+        .backup-history {
+            margin-top: 30px;
+        }
+
+        .history-item {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid var(--info);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .history-type {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .history-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .history-details {
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .backup-empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--gray);
+        }
+
+        .backup-empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--light-gray);
+            opacity: 0.7;
+        }
+
+        .backup-empty-state h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
@@ -769,6 +1035,9 @@
                 </div>
                 <div class="tab" data-tab="export">
                     <i class="fas fa-file-export"></i> Exportar
+                </div>
+                <div class="tab" data-tab="backup">
+                    <i class="fas fa-database"></i> Backup
                 </div>
             </div>
 
@@ -1067,6 +1336,121 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Backup -->
+            <div id="backup-tab" class="tab-content">
+                <div class="card-header">
+                    <i class="fas fa-database"></i> Backup de Dados
+                </div>
+                <div class="form-container">
+                    <div class="backup-info">
+                        <i class="fas fa-info-circle"></i> <strong>Importante:</strong> Faça backup regularmente dos seus dados para evitar perdas. Você pode exportar todos os dados para um arquivo JSON e importá-los posteriormente.
+                    </div>
+
+                    <div class="backup-stats" id="backup-stats">
+                        <!-- Estatísticas de backup serão inseridas aqui -->
+                    </div>
+
+                    <div class="section-title">Opções de Backup</div>
+                    
+                    <div class="backup-options">
+                        <button id="backup-export" class="backup-btn backup-export">
+                            <i class="fas fa-file-export"></i> Exportar Backup
+                        </button>
+                        <button id="backup-import" class="backup-btn backup-import">
+                            <i class="fas fa-file-import"></i> Importar Backup
+                        </button>
+                        <button id="backup-restore" class="backup-btn backup-restore">
+                            <i class="fas fa-history"></i> Restaurar Dados
+                        </button>
+                        <button id="backup-clear" class="backup-btn backup-clear">
+                            <i class="fas fa-trash-alt"></i> Limpar Tudo
+                        </button>
+                    </div>
+
+                    <!-- Área de importação de arquivo -->
+                    <div id="import-area" class="hidden">
+                        <div class="file-input-container">
+                            <label for="backup-file" class="file-input-label">
+                                <i class="fas fa-upload"></i> Selecione o arquivo de backup (.json)
+                            </label>
+                            <input type="file" id="backup-file" class="file-input" accept=".json">
+                            <div id="file-name" class="file-name">Nenhum arquivo selecionado</div>
+                        </div>
+
+                        <div class="backup-warning" id="import-warning">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>Atenção:</strong> Importar dados irá substituir os dados existentes. Recomendamos fazer um backup antes de importar.
+                        </div>
+
+                        <div class="buttons-container">
+                            <button id="confirm-import" class="btn btn-success">
+                                <i class="fas fa-check"></i> Confirmar Importação
+                            </button>
+                            <button id="cancel-import" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Área de restauração -->
+                    <div id="restore-area" class="hidden">
+                        <div class="backup-warning">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>Atenção:</strong> Restaurar dados irá substituir TODOS os dados atuais. Esta ação não pode ser desfeita.
+                        </div>
+
+                        <div class="file-input-container">
+                            <label for="restore-file" class="file-input-label">
+                                <i class="fas fa-history"></i> Selecione o arquivo para restaurar (.json)
+                            </label>
+                            <input type="file" id="restore-file" class="file-input" accept=".json">
+                            <div id="restore-file-name" class="file-name">Nenhum arquivo selecionado</div>
+                        </div>
+
+                        <div class="buttons-container">
+                            <button id="confirm-restore" class="btn btn-warning">
+                                <i class="fas fa-history"></i> Restaurar Dados
+                            </button>
+                            <button id="cancel-restore" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Área de limpeza -->
+                    <div id="clear-area" class="hidden">
+                        <div class="backup-warning">
+                            <i class="fas fa-exclamation-triangle"></i> <strong>Atenção Crítica:</strong> Esta ação irá apagar TODOS os dados da pesquisa. Esta ação não pode ser desfeita.
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirm-clear">Digite "APAGAR TUDO" para confirmar:</label>
+                            <input type="text" id="confirm-clear" class="form-control" placeholder="Digite APAGAR TUDO">
+                        </div>
+
+                        <div class="buttons-container">
+                            <button id="confirm-clear-btn" class="btn btn-danger" disabled>
+                                <i class="fas fa-trash-alt"></i> Apagar Todos os Dados
+                            </button>
+                            <button id="cancel-clear" class="btn btn-secondary">
+                                <i class="fas fa-times"></i> Cancelar
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Histórico de backups -->
+                    <div class="backup-history">
+                        <h3 class="section-title">Histórico de Backups</h3>
+                        <div id="backup-history-list">
+                            <!-- Histórico será inserido aqui -->
+                        </div>
+                        <div id="backup-empty-state" class="backup-empty-state">
+                            <i class="fas fa-history"></i>
+                            <h3>Nenhum backup realizado</h3>
+                            <p>Faça seu primeiro backup para começar a proteger seus dados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="footer">
@@ -1080,7 +1464,8 @@
         let db;
         const DB_NAME = "RealEstateResearchDB";
         const STORE_NAME = "researchData";
-        const DB_VERSION = 1;
+        const BACKUP_STORE_NAME = "backupHistory";
+        const DB_VERSION = 2; // Aumentado para versão 2 para adicionar store de backup
 
         // Inicializar o banco de dados
         function initDB() {
@@ -1095,13 +1480,16 @@
                 request.onsuccess = () => {
                     db = request.result;
                     console.log("Banco de dados imobiliário aberto com sucesso");
+                    loadBackupStats();
+                    loadBackupHistory();
                     resolve(db);
                 };
                 
                 request.onupgradeneeded = (event) => {
                     const db = event.target.result;
+                    const oldVersion = event.oldVersion;
                     
-                    // Criar object store se não existir
+                    // Criar object store para dados de pesquisa se não existir
                     if (!db.objectStoreNames.contains(STORE_NAME)) {
                         const objectStore = db.createObjectStore(STORE_NAME, { 
                             keyPath: "id", 
@@ -1117,6 +1505,19 @@
                         objectStore.createIndex("interestEvaluation", "interestEvaluation", { unique: false });
                         objectStore.createIndex("employment", "employment", { unique: false });
                         objectStore.createIndex("specialNeeds", "specialNeeds", { unique: false });
+                    }
+                    
+                    // Criar object store para histórico de backups (nova na versão 2)
+                    if (!db.objectStoreNames.contains(BACKUP_STORE_NAME)) {
+                        const backupStore = db.createObjectStore(BACKUP_STORE_NAME, { 
+                            keyPath: "id", 
+                            autoIncrement: true 
+                        });
+                        
+                        // Criar índices para histórico
+                        backupStore.createIndex("type", "type", { unique: false });
+                        backupStore.createIndex("date", "date", { unique: false });
+                        backupStore.createIndex("records", "records", { unique: false });
                     }
                 };
             });
@@ -1139,6 +1540,27 @@
                 request.onerror = () => {
                     reject(request.error);
                 };
+            });
+        }
+
+        // Salvar múltiplos dados de uma vez
+        async function saveMultipleData(dataArray) {
+            if (!db) await initDB();
+            
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], "readwrite");
+                const store = transaction.objectStore(STORE_NAME);
+                
+                const requests = dataArray.map(data => store.add(data));
+                
+                Promise.all(requests.map(req => 
+                    new Promise((res, rej) => {
+                        req.onsuccess = () => res(req.result);
+                        req.onerror = () => rej(req.error);
+                    })
+                ))
+                .then(results => resolve(results))
+                .catch(error => reject(error));
             });
         }
 
@@ -1200,6 +1622,67 @@
             });
         }
 
+        // Limpar todos os dados
+        async function clearAllData() {
+            if (!db) await initDB();
+            
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([STORE_NAME], "readwrite");
+                const store = transaction.objectStore(STORE_NAME);
+                
+                const request = store.clear();
+                
+                request.onsuccess = () => {
+                    resolve(true);
+                };
+                
+                request.onerror = () => {
+                    reject(request.error);
+                };
+            });
+        }
+
+        // Salvar registro no histórico de backups
+        async function saveBackupHistory(backupData) {
+            if (!db) await initDB();
+            
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([BACKUP_STORE_NAME], "readwrite");
+                const store = transaction.objectStore(BACKUP_STORE_NAME);
+                
+                const request = store.add(backupData);
+                
+                request.onsuccess = () => {
+                    resolve(request.result);
+                };
+                
+                request.onerror = () => {
+                    reject(request.error);
+                };
+            });
+        }
+
+        // Obter histórico de backups
+        async function getBackupHistory() {
+            if (!db) await initDB();
+            
+            return new Promise((resolve, reject) => {
+                const transaction = db.transaction([BACKUP_STORE_NAME], "readonly");
+                const store = transaction.objectStore(BACKUP_STORE_NAME);
+                const request = store.getAll();
+                
+                request.onsuccess = () => {
+                    // Ordenar por data (mais recente primeiro)
+                    const sorted = request.result.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    resolve(sorted);
+                };
+                
+                request.onerror = () => {
+                    reject(request.error);
+                };
+            });
+        }
+
         // Exibir mensagem de status
         function showMessage(message, type = "success") {
             const messageEl = document.getElementById("status-message");
@@ -1210,6 +1693,259 @@
             setTimeout(() => {
                 messageEl.classList.add("hidden");
             }, 4000);
+        }
+
+        // Carregar estatísticas de backup
+        async function loadBackupStats() {
+            const data = await getAllData();
+            const backupHistory = await getBackupHistory();
+            
+            const statsContainer = document.getElementById("backup-stats");
+            
+            statsContainer.innerHTML = `
+                <div class="backup-stat">
+                    <div class="backup-stat-value">${data.length}</div>
+                    <div class="backup-stat-label">Registros Atuais</div>
+                </div>
+                <div class="backup-stat">
+                    <div class="backup-stat-value">${backupHistory.length}</div>
+                    <div class="backup-stat-label">Backups Realizados</div>
+                </div>
+                <div class="backup-stat">
+                    <div class="backup-stat-value">${data.length > 0 ? Math.round((data.reduce((sum, item) => sum + JSON.stringify(item).length, 0) / 1024) * 100) / 100 : '0'} KB</div>
+                    <div class="backup-stat-label">Tamanho dos Dados</div>
+                </div>
+                <div class="backup-stat">
+                    <div class="backup-stat-value">${backupHistory.length > 0 ? new Date(backupHistory[0].date).toLocaleDateString('pt-BR') : 'Nenhum'}</div>
+                    <div class="backup-stat-label">Último Backup</div>
+                </div>
+            `;
+        }
+
+        // Carregar histórico de backups
+        async function loadBackupHistory() {
+            const backupHistory = await getBackupHistory();
+            const historyList = document.getElementById("backup-history-list");
+            const emptyState = document.getElementById("backup-empty-state");
+            
+            historyList.innerHTML = "";
+            
+            if (backupHistory.length === 0) {
+                emptyState.classList.remove("hidden");
+                return;
+            }
+            
+            emptyState.classList.add("hidden");
+            
+            backupHistory.forEach(backup => {
+                const historyItem = document.createElement("div");
+                historyItem.className = "history-item";
+                
+                // Determinar ícone e cor baseado no tipo
+                let icon = "fas fa-database";
+                let color = "var(--info)";
+                
+                switch(backup.type) {
+                    case 'export':
+                        icon = "fas fa-file-export";
+                        color = "var(--success)";
+                        break;
+                    case 'import':
+                        icon = "fas fa-file-import";
+                        color = "var(--info)";
+                        break;
+                    case 'restore':
+                        icon = "fas fa-history";
+                        color = "var(--warning)";
+                        break;
+                    case 'clear':
+                        icon = "fas fa-trash-alt";
+                        color = "var(--danger)";
+                        break;
+                }
+                
+                historyItem.style.borderLeftColor = color;
+                
+                historyItem.innerHTML = `
+                    <div class="history-header">
+                        <div class="history-type">
+                            <i class="${icon}" style="color: ${color}; margin-right: 8px;"></i>
+                            ${backup.type === 'export' ? 'Backup Exportado' : 
+                              backup.type === 'import' ? 'Dados Importados' : 
+                              backup.type === 'restore' ? 'Dados Restaurados' : 
+                              'Dados Limpos'}
+                        </div>
+                        <div class="history-date">${new Date(backup.date).toLocaleDateString('pt-BR')} ${new Date(backup.date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</div>
+                    </div>
+                    <div class="history-details">
+                        ${backup.records ? `<strong>Registros:</strong> ${backup.records}` : ''}
+                        ${backup.filename ? `<br><strong>Arquivo:</strong> ${backup.filename}` : ''}
+                        ${backup.description ? `<br>${backup.description}` : ''}
+                    </div>
+                `;
+                
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        // Exportar backup completo
+        async function exportBackup() {
+            try {
+                const data = await getAllData();
+                
+                if (data.length === 0) {
+                    showMessage("Não há dados para exportar.", "warning");
+                    return;
+                }
+                
+                // Criar objeto de backup com metadados
+                const backupData = {
+                    version: "1.0",
+                    exportDate: new Date().toISOString(),
+                    records: data.length,
+                    data: data,
+                    app: "Pesquisa Imobiliária"
+                };
+                
+                const dataStr = JSON.stringify(backupData, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileName = `backup_pesquisa_imobiliaria_${new Date().toISOString().slice(0,10)}_${data.length}_registros.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileName);
+                linkElement.click();
+                
+                // Salvar no histórico
+                await saveBackupHistory({
+                    type: 'export',
+                    date: new Date().toISOString(),
+                    records: data.length,
+                    filename: exportFileName,
+                    description: `Backup exportado com ${data.length} registros`
+                });
+                
+                showMessage(`Backup exportado com sucesso! ${data.length} registros salvos no arquivo ${exportFileName}`, "success");
+                
+                // Atualizar estatísticas e histórico
+                loadBackupStats();
+                loadBackupHistory();
+                
+            } catch (error) {
+                console.error("Erro ao exportar backup:", error);
+                showMessage("Erro ao exportar backup. Tente novamente.", "error");
+            }
+        }
+
+        // Importar backup
+        async function importBackup(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = async function(e) {
+                    try {
+                        const backupData = JSON.parse(e.target.result);
+                        
+                        // Validar estrutura do backup
+                        if (!backupData.data || !Array.isArray(backupData.data)) {
+                            throw new Error("Arquivo de backup inválido");
+                        }
+                        
+                        // Limpar dados existentes
+                        await clearAllData();
+                        
+                        // Importar novos dados
+                        let importedCount = 0;
+                        let errorCount = 0;
+                        
+                        for (const item of backupData.data) {
+                            try {
+                                // Garantir que não há ID duplicado
+                                delete item.id;
+                                await saveData(item);
+                                importedCount++;
+                            } catch (error) {
+                                console.error("Erro ao importar item:", error);
+                                errorCount++;
+                            }
+                        }
+                        
+                        // Salvar no histórico
+                        await saveBackupHistory({
+                            type: 'import',
+                            date: new Date().toISOString(),
+                            records: importedCount,
+                            filename: file.name,
+                            description: `Dados importados: ${importedCount} registros importados${errorCount > 0 ? `, ${errorCount} erros` : ''}`
+                        });
+                        
+                        resolve({ imported: importedCount, errors: errorCount });
+                        
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = () => {
+                    reject(new Error("Erro ao ler arquivo"));
+                };
+                
+                reader.readAsText(file);
+            });
+        }
+
+        // Restaurar dados (substitui completamente)
+        async function restoreBackup(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                
+                reader.onload = async function(e) {
+                    try {
+                        const backupData = JSON.parse(e.target.result);
+                        
+                        // Validar estrutura do backup
+                        if (!backupData.data || !Array.isArray(backupData.data)) {
+                            throw new Error("Arquivo de backup inválido");
+                        }
+                        
+                        // Limpar dados existentes
+                        await clearAllData();
+                        
+                        // Restaurar dados (usa saveMultipleData para melhor performance)
+                        const importedCount = backupData.data.length;
+                        
+                        // Remover IDs para evitar conflitos
+                        const dataToImport = backupData.data.map(item => {
+                            const newItem = { ...item };
+                            delete newItem.id;
+                            return newItem;
+                        });
+                        
+                        await saveMultipleData(dataToImport);
+                        
+                        // Salvar no histórico
+                        await saveBackupHistory({
+                            type: 'restore',
+                            date: new Date().toISOString(),
+                            records: importedCount,
+                            filename: file.name,
+                            description: `Dados restaurados: ${importedCount} registros`
+                        });
+                        
+                        resolve({ restored: importedCount });
+                        
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                
+                reader.onerror = () => {
+                    reject(new Error("Erro ao ler arquivo"));
+                };
+                
+                reader.readAsText(file);
+            });
         }
 
         // Controlar a exibição do campo CPF baseado no interesse em avaliação
@@ -1534,6 +2270,7 @@
                         showMessage("Registro excluído com sucesso!", "success");
                         loadData();
                         loadStats();
+                        loadBackupStats();
                     }
                 });
             });
@@ -2123,6 +2860,7 @@
                     // Atualizar a lista de dados e estatísticas
                     await loadData();
                     await loadStats();
+                    await loadBackupStats();
                     
                     // Mudar para a aba de dados
                     document.querySelector('.tab[data-tab="data"]').click();
@@ -2181,6 +2919,9 @@
                         loadData();
                     } else if (tabId === 'stats') {
                         loadStats();
+                    } else if (tabId === 'backup') {
+                        loadBackupStats();
+                        loadBackupHistory();
                     }
                 });
             });
@@ -2190,6 +2931,189 @@
             document.getElementById('export-csv').addEventListener('click', exportToCSV);
             document.getElementById('export-excel').addEventListener('click', exportToExcel);
             document.getElementById('export-pdf').addEventListener('click', exportToPDF);
+            
+            // Configurar botões de backup
+            document.getElementById('backup-export').addEventListener('click', exportBackup);
+            
+            // Configurar botão de importação
+            document.getElementById('backup-import').addEventListener('click', () => {
+                document.getElementById('import-area').classList.remove('hidden');
+                document.getElementById('restore-area').classList.add('hidden');
+                document.getElementById('clear-area').classList.add('hidden');
+            });
+            
+            // Configurar botão de restauração
+            document.getElementById('backup-restore').addEventListener('click', () => {
+                document.getElementById('restore-area').classList.remove('hidden');
+                document.getElementById('import-area').classList.add('hidden');
+                document.getElementById('clear-area').classList.add('hidden');
+            });
+            
+            // Configurar botão de limpeza
+            document.getElementById('backup-clear').addEventListener('click', () => {
+                document.getElementById('clear-area').classList.remove('hidden');
+                document.getElementById('import-area').classList.add('hidden');
+                document.getElementById('restore-area').classList.add('hidden');
+            });
+            
+            // Configurar input de arquivo para backup
+            document.getElementById('backup-file').addEventListener('change', function(e) {
+                const fileName = e.target.files[0] ? e.target.files[0].name : 'Nenhum arquivo selecionado';
+                document.getElementById('file-name').textContent = fileName;
+            });
+            
+            // Configurar input de arquivo para restauração
+            document.getElementById('restore-file').addEventListener('change', function(e) {
+                const fileName = e.target.files[0] ? e.target.files[0].name : 'Nenhum arquivo selecionado';
+                document.getElementById('restore-file-name').textContent = fileName;
+            });
+            
+            // Configurar botão de confirmação de importação
+            document.getElementById('confirm-import').addEventListener('click', async () => {
+                const fileInput = document.getElementById('backup-file');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    showMessage("Por favor, selecione um arquivo para importar.", "warning");
+                    return;
+                }
+                
+                if (!file.name.endsWith('.json')) {
+                    showMessage("Por favor, selecione um arquivo JSON válido.", "error");
+                    return;
+                }
+                
+                try {
+                    showMessage("Importando dados...", "info");
+                    
+                    const result = await importBackup(file);
+                    
+                    showMessage(`Importação concluída: ${result.imported} registros importados${result.errors > 0 ? `, ${result.errors} erros` : ''}`, "success");
+                    
+                    // Resetar interface
+                    document.getElementById('import-area').classList.add('hidden');
+                    fileInput.value = '';
+                    document.getElementById('file-name').textContent = 'Nenhum arquivo selecionado';
+                    
+                    // Atualizar dados
+                    await loadData();
+                    await loadStats();
+                    await loadBackupStats();
+                    await loadBackupHistory();
+                    
+                } catch (error) {
+                    console.error("Erro na importação:", error);
+                    showMessage("Erro ao importar dados: " + error.message, "error");
+                }
+            });
+            
+            // Configurar botão de cancelamento de importação
+            document.getElementById('cancel-import').addEventListener('click', () => {
+                document.getElementById('import-area').classList.add('hidden');
+                document.getElementById('backup-file').value = '';
+                document.getElementById('file-name').textContent = 'Nenhum arquivo selecionado';
+            });
+            
+            // Configurar botão de confirmação de restauração
+            document.getElementById('confirm-restore').addEventListener('click', async () => {
+                const fileInput = document.getElementById('restore-file');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    showMessage("Por favor, selecione um arquivo para restaurar.", "warning");
+                    return;
+                }
+                
+                if (!file.name.endsWith('.json')) {
+                    showMessage("Por favor, selecione um arquivo JSON válido.", "error");
+                    return;
+                }
+                
+                if (!confirm("ATENÇÃO: Esta ação irá substituir TODOS os dados atuais. Deseja continuar?")) {
+                    return;
+                }
+                
+                try {
+                    showMessage("Restaurando dados...", "info");
+                    
+                    const result = await restoreBackup(file);
+                    
+                    showMessage(`Restauração concluída: ${result.restored} registros restaurados`, "success");
+                    
+                    // Resetar interface
+                    document.getElementById('restore-area').classList.add('hidden');
+                    fileInput.value = '';
+                    document.getElementById('restore-file-name').textContent = 'Nenhum arquivo selecionado';
+                    
+                    // Atualizar dados
+                    await loadData();
+                    await loadStats();
+                    await loadBackupStats();
+                    await loadBackupHistory();
+                    
+                } catch (error) {
+                    console.error("Erro na restauração:", error);
+                    showMessage("Erro ao restaurar dados: " + error.message, "error");
+                }
+            });
+            
+            // Configurar botão de cancelamento de restauração
+            document.getElementById('cancel-restore').addEventListener('click', () => {
+                document.getElementById('restore-area').classList.add('hidden');
+                document.getElementById('restore-file').value = '';
+                document.getElementById('restore-file-name').textContent = 'Nenhum arquivo selecionado';
+            });
+            
+            // Configurar validação para limpeza de dados
+            document.getElementById('confirm-clear').addEventListener('input', function(e) {
+                const confirmBtn = document.getElementById('confirm-clear-btn');
+                confirmBtn.disabled = e.target.value !== 'APAGAR TUDO';
+            });
+            
+            // Configurar botão de confirmação de limpeza
+            document.getElementById('confirm-clear-btn').addEventListener('click', async () => {
+                if (!confirm("CONFIRMAÇÃO FINAL: Esta ação irá APAGAR PERMANENTEMENTE TODOS os dados. Esta ação NÃO PODE ser desfeita. Deseja continuar?")) {
+                    return;
+                }
+                
+                try {
+                    showMessage("Apagando todos os dados...", "warning");
+                    
+                    await clearAllData();
+                    
+                    // Salvar no histórico
+                    await saveBackupHistory({
+                        type: 'clear',
+                        date: new Date().toISOString(),
+                        records: 0,
+                        description: 'Todos os dados foram apagados'
+                    });
+                    
+                    showMessage("Todos os dados foram apagados com sucesso.", "success");
+                    
+                    // Resetar interface
+                    document.getElementById('clear-area').classList.add('hidden');
+                    document.getElementById('confirm-clear').value = '';
+                    document.getElementById('confirm-clear-btn').disabled = true;
+                    
+                    // Atualizar dados
+                    await loadData();
+                    await loadStats();
+                    await loadBackupStats();
+                    await loadBackupHistory();
+                    
+                } catch (error) {
+                    console.error("Erro ao apagar dados:", error);
+                    showMessage("Erro ao apagar dados: " + error.message, "error");
+                }
+            });
+            
+            // Configurar botão de cancelamento de limpeza
+            document.getElementById('cancel-clear').addEventListener('click', () => {
+                document.getElementById('clear-area').classList.add('hidden');
+                document.getElementById('confirm-clear').value = '';
+                document.getElementById('confirm-clear-btn').disabled = true;
+            });
         });
     </script>
 </body>
