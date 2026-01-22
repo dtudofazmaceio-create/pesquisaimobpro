@@ -27,6 +27,7 @@
             --gray: #6C7A8A;
             --light-gray: #E8EDF3;
             --danger: #E63946;
+            --whatsapp: #25D366;
             --border-radius: 12px;
             --shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s ease;
@@ -261,6 +262,18 @@
             transform: translateY(-3px);
         }
 
+        .btn-whatsapp {
+            background: linear-gradient(to right, var(--whatsapp), #128C7E);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+
+        .btn-whatsapp:hover {
+            background: linear-gradient(to right, #128C7E, var(--whatsapp));
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
+        }
+
         .data-list {
             margin-top: 30px;
         }
@@ -413,6 +426,19 @@
             align-items: center;
             gap: 8px;
             background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .employment-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(to right, #8B4513, #A0522D);
             color: white;
             padding: 8px 15px;
             border-radius: 20px;
@@ -646,6 +672,43 @@
             content: " *";
             color: var(--danger);
         }
+
+        .special-needs-group {
+            margin-top: 15px;
+        }
+
+        .whatsapp-btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .whatsapp-note {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 15px 18px;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
+            background-size: 1em;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(42, 92, 141, 0.15);
+        }
     </style>
 </head>
 <body>
@@ -701,6 +764,39 @@
                         </div>
 
                         <h3 class="section-title">
+                            <span class="property-icon"><i class="fas fa-briefcase"></i></span>
+                            Situação Profissional
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label class="required">Qual sua situação profissional?</label>
+                            <div class="radio-group" id="employment-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="employment" value="carteira_assinada" required> 
+                                    <i class="fas fa-file-contract"></i> Carteira Assinada
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="employment" value="autonomo" required> 
+                                    <i class="fas fa-user-tie"></i> Autônomo
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="employment" value="servidor_publico" required> 
+                                    <i class="fas fa-landmark"></i> Servidor Público
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="employment" value="empresario" required> 
+                                    <i class="fas fa-building"></i> Empresário
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campo tempo de carteira (apenas para carteira assinada) -->
+                        <div id="employment-time-container" class="form-group conditional-field hidden">
+                            <label for="employmentTime" class="conditional-required">Quanto tempo de carteira assinada?</label>
+                            <input type="text" id="employmentTime" class="form-control" placeholder="Ex: 2 anos e 6 meses">
+                        </div>
+
+                        <h3 class="section-title">
                             <span class="property-icon"><i class="fas fa-money-check-alt"></i></span>
                             Recursos Financeiros
                         </h3>
@@ -710,19 +806,21 @@
                                 <label for="income" class="required">Renda Mensal</label>
                                 <input type="text" id="income" class="form-control" placeholder="R$ 3.500,00" required>
                             </div>
-                            <div class="form-group">
+                            
+                            <!-- Campos FGTS (apenas para carteira assinada) -->
+                            <div id="fgts-container" class="form-group hidden">
                                 <label class="required">Você já utilizou o FGTS para compra de imóvel?</label>
                                 <div class="radio-group" id="fgts-group">
                                     <label class="radio-option">
-                                        <input type="radio" name="usedFGTS" value="sim" required> 
+                                        <input type="radio" name="usedFGTS" value="sim"> 
                                         <i class="fas fa-check-circle"></i> Sim, já utilizei
                                     </label>
                                     <label class="radio-option">
-                                        <input type="radio" name="usedFGTS" value="nao" required> 
+                                        <input type="radio" name="usedFGTS" value="nao"> 
                                         <i class="fas fa-times-circle"></i> Não, nunca utilizei
                                     </label>
                                     <label class="radio-option">
-                                        <input type="radio" name="usedFGTS" value="nao_sei" required> 
+                                        <input type="radio" name="usedFGTS" value="nao_sei"> 
                                         <i class="fas fa-question-circle"></i> Não sei o que é FGTS
                                     </label>
                                 </div>
@@ -789,6 +887,24 @@
                             </div>
                         </div>
 
+                        <!-- Pergunta sobre necessidades especiais -->
+                        <div class="form-group">
+                            <label class="required">Tem alguém em sua família com necessidades especiais?</label>
+                            <div class="radio-group special-needs-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="specialNeeds" value="sim" required> 
+                                    <i class="fas fa-wheelchair"></i> Sim
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="specialNeeds" value="nao" required> 
+                                    <i class="fas fa-user-check"></i> Não
+                                </label>
+                            </div>
+                            <div class="info-note">
+                                <i class="fas fa-info-circle"></i> Esta informação nos ajuda a entender melhor as necessidades de acessibilidade e adaptações necessárias.
+                            </div>
+                        </div>
+
                         <h3 class="section-title">
                             <span class="property-icon"><i class="fas fa-star"></i></span>
                             Casa dos Sonhos
@@ -842,6 +958,16 @@
                             <button type="button" id="clear-form" class="btn btn-secondary">
                                 <i class="fas fa-broom"></i> Limpar Formulário
                             </button>
+                        </div>
+
+                        <!-- Botão do WhatsApp -->
+                        <div class="whatsapp-btn-container">
+                            <button type="button" id="send-whatsapp" class="btn btn-whatsapp">
+                                <i class="fab fa-whatsapp"></i> Enviar Pesquisa por WhatsApp
+                            </button>
+                            <div class="whatsapp-note">
+                                <i class="fas fa-info-circle"></i> Esta opção envia um resumo da pesquisa para o número informado acima
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -959,6 +1085,8 @@
                         objectStore.createIndex("hasProperty", "hasProperty", { unique: false });
                         objectStore.createIndex("usedFGTS", "usedFGTS", { unique: false });
                         objectStore.createIndex("interestEvaluation", "interestEvaluation", { unique: false });
+                        objectStore.createIndex("employment", "employment", { unique: false });
+                        objectStore.createIndex("specialNeeds", "specialNeeds", { unique: false });
                     }
                 };
             });
@@ -1056,6 +1184,41 @@
             }
         }
 
+        // Controlar a exibição dos campos baseado na situação profissional
+        function toggleEmploymentFields() {
+            const employmentGroup = document.getElementById('employment-group');
+            const employmentTimeContainer = document.getElementById('employment-time-container');
+            const fgtsContainer = document.getElementById('fgts-container');
+            const employmentTimeInput = document.getElementById('employmentTime');
+            const fgtsRadios = document.querySelectorAll('input[name="usedFGTS"]');
+            
+            const selectedEmployment = employmentGroup.querySelector('input[name="employment"]:checked');
+            
+            if (selectedEmployment) {
+                if (selectedEmployment.value === 'carteira_assinada') {
+                    // Mostrar campo tempo de carteira e FGTS
+                    employmentTimeContainer.classList.remove('hidden');
+                    employmentTimeContainer.style.animation = 'slideDown 0.5s ease';
+                    employmentTimeInput.required = true;
+                    
+                    fgtsContainer.classList.remove('hidden');
+                    fgtsContainer.style.animation = 'slideDown 0.5s ease';
+                    fgtsRadios.forEach(radio => radio.required = true);
+                } else {
+                    // Esconder campo tempo de carteira e FGTS
+                    employmentTimeContainer.classList.add('hidden');
+                    employmentTimeInput.required = false;
+                    employmentTimeInput.value = '';
+                    
+                    fgtsContainer.classList.add('hidden');
+                    fgtsRadios.forEach(radio => {
+                        radio.required = false;
+                        radio.checked = false;
+                    });
+                }
+            }
+        }
+
         // Carregar e exibir dados na lista
         async function loadData() {
             const data = await getAllData();
@@ -1077,11 +1240,34 @@
                     ? '<span class="fgts-badge"><i class="fas fa-check"></i> Usou FGTS</span>'
                     : item.usedFGTS === 'nao'
                     ? '<span style="color: var(--gray);"><i class="fas fa-times"></i> Não usou FGTS</span>'
-                    : '<span style="color: var(--gray);"><i class="fas fa-question"></i> Não sabe FGTS</span>';
+                    : item.usedFGTS === 'nao_sei'
+                    ? '<span style="color: var(--gray);"><i class="fas fa-question"></i> Não sabe FGTS</span>'
+                    : '';
                 
                 const evaluationBadge = item.interestEvaluation === 'sim'
                     ? '<span class="evaluation-badge"><i class="fas fa-chart-line"></i> Interesse em avaliação</span>'
                     : '<span style="color: var(--gray);"><i class="fas fa-ban"></i> Sem interesse</span>';
+                
+                // Badge para situação profissional
+                let employmentBadge = '';
+                switch(item.employment) {
+                    case 'carteira_assinada':
+                        employmentBadge = '<span class="employment-badge"><i class="fas fa-file-contract"></i> Carteira Assinada</span>';
+                        break;
+                    case 'autonomo':
+                        employmentBadge = '<span class="employment-badge" style="background: linear-gradient(to right, #6A5ACD, #8A2BE2);"><i class="fas fa-user-tie"></i> Autônomo</span>';
+                        break;
+                    case 'servidor_publico':
+                        employmentBadge = '<span class="employment-badge" style="background: linear-gradient(to right, #228B22, #32CD32);"><i class="fas fa-landmark"></i> Servidor Público</span>';
+                        break;
+                    case 'empresario':
+                        employmentBadge = '<span class="employment-badge" style="background: linear-gradient(to right, #FF8C00, #FFA500);"><i class="fas fa-building"></i> Empresário</span>';
+                        break;
+                }
+                
+                const specialNeedsBadge = item.specialNeeds === 'sim'
+                    ? '<span style="color: var(--accent);"><i class="fas fa-wheelchair"></i> Com necessidades especiais</span>'
+                    : '<span style="color: var(--gray);"><i class="fas fa-user-check"></i> Sem necessidades especiais</span>';
                 
                 const dataItem = document.createElement("div");
                 dataItem.className = "data-item";
@@ -1091,7 +1277,7 @@
                             <div class="data-name">${item.name}</div>
                             <div class="data-phone">${item.phone} ${item.cpf ? '| CPF: ' + item.cpf : ''}</div>
                             <div style="margin-top: 8px; font-size: 0.85rem;">
-                                ${fgtsBadge} ${evaluationBadge}
+                                ${employmentBadge} ${fgtsBadge} ${evaluationBadge}
                             </div>
                         </div>
                         <button class="delete-btn" data-id="${item.id}">
@@ -1100,8 +1286,8 @@
                     </div>
                     <div class="data-details">
                         <p><strong><i class="fas fa-money-bill-wave"></i> Renda:</strong> ${item.income} | <strong><i class="fas fa-home"></i> Tem imóvel:</strong> ${item.hasProperty === 'sim' ? 'Sim ✅' : 'Não ❌'}</p>
-                        <p><strong><i class="fas fa-briefcase"></i> Trabalha com:</strong> ${item.work}</p>
-                        <p><strong><i class="fas fa-users"></i> Família:</strong> ${item.familySize ? item.familySize + ' pessoas' : 'Não informado'}</p>
+                        <p><strong><i class="fas fa-briefcase"></i> Trabalha com:</strong> ${item.work} ${item.employmentTime ? ' | <strong>Tempo de carteira:</strong> ' + item.employmentTime : ''}</p>
+                        <p><strong><i class="fas fa-users"></i> Família:</strong> ${item.familySize ? item.familySize + ' pessoas' : 'Não informado'} | ${specialNeedsBadge}</p>
                         <p><strong><i class="fas fa-star"></i> Casa dos sonhos:</strong> ${item.dreamHouse.substring(0, 120)}${item.dreamHouse.length > 120 ? '...' : ''}</p>
                         <p><strong><i class="fas fa-map-marker-alt"></i> Localização desejada:</strong> ${item.location}</p>
                     </div>
@@ -1147,6 +1333,15 @@
             const interestEvaluation = data.filter(item => item.interestEvaluation === 'sim').length;
             const avgFamilySize = data.reduce((sum, item) => sum + (parseInt(item.familySize) || 0), 0) / total;
             
+            // Situação profissional
+            const carteiraAssinada = data.filter(item => item.employment === 'carteira_assinada').length;
+            const autonomo = data.filter(item => item.employment === 'autonomo').length;
+            const servidorPublico = data.filter(item => item.employment === 'servidor_publico').length;
+            const empresario = data.filter(item => item.employment === 'empresario').length;
+            
+            // Necessidades especiais
+            const specialNeeds = data.filter(item => item.specialNeeds === 'sim').length;
+            
             // Localizações mais mencionadas
             const locations = {};
             data.forEach(item => {
@@ -1180,8 +1375,24 @@
                     <div class="stat-label">Interesse em avaliação</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">${avgFamilySize.toFixed(1)}</div>
-                    <div class="stat-label">Média pessoas/família</div>
+                    <div class="stat-value">${specialNeeds}</div>
+                    <div class="stat-label">Com necessidades especiais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${carteiraAssinada}</div>
+                    <div class="stat-label">Carteira Assinada</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${autonomo}</div>
+                    <div class="stat-label">Autônomos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${servidorPublico}</div>
+                    <div class="stat-label">Servidores Públicos</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${empresario}</div>
+                    <div class="stat-label">Empresários</div>
                 </div>
                 <div class="stat-card" style="min-width: 100%;">
                     <div class="stat-label">Localização mais desejada</div>
@@ -1223,6 +1434,96 @@
             return "R$ 0,00";
         }
 
+        // Função para enviar pesquisa por WhatsApp
+        async function sendWhatsApp() {
+            const phoneInput = document.getElementById('phone');
+            const phone = phoneInput.value.trim();
+            
+            if (!phone) {
+                showMessage("Por favor, informe um telefone para enviar a pesquisa por WhatsApp.", "error");
+                phoneInput.focus();
+                return;
+            }
+            
+            // Remover máscara do telefone
+            const cleanPhone = phone.replace(/\D/g, '');
+            
+            // Obter dados do formulário
+            const name = document.getElementById('name').value.trim();
+            const employment = document.querySelector('input[name="employment"]:checked')?.value;
+            const employmentTime = document.getElementById('employmentTime').value.trim();
+            const income = document.getElementById('income').value.trim();
+            const usedFGTS = document.querySelector('input[name="usedFGTS"]:checked')?.value;
+            const interestEvaluation = document.querySelector('input[name="interestEvaluation"]:checked')?.value;
+            const hasProperty = document.querySelector('input[name="hasProperty"]:checked')?.value;
+            const specialNeeds = document.querySelector('input[name="specialNeeds"]:checked')?.value;
+            const dreamHouse = document.getElementById('dreamHouse').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const work = document.getElementById('work').value.trim();
+            const familySize = document.getElementById('familySize').value;
+            
+            if (!name) {
+                showMessage("Por favor, preencha o nome para enviar a pesquisa.", "error");
+                return;
+            }
+            
+            // Mapear valores para textos mais amigáveis
+            const employmentMap = {
+                'carteira_assinada': 'Carteira Assinada',
+                'autonomo': 'Autônomo',
+                'servidor_publico': 'Servidor Público',
+                'empresario': 'Empresário'
+            };
+            
+            const fgtsMap = {
+                'sim': 'Sim, já utilizei',
+                'nao': 'Não, nunca utilizei',
+                'nao_sei': 'Não sei o que é FGTS'
+            };
+            
+            const yesNoMap = {
+                'sim': 'Sim',
+                'nao': 'Não'
+            };
+            
+            // Construir mensagem
+            let message = `*Pesquisa Imobiliária - Resumo da Pesquisa*\n\n`;
+            message += `*Nome:* ${name}\n`;
+            message += `*Telefone:* ${phone}\n\n`;
+            
+            message += `*Situação Profissional:* ${employmentMap[employment] || 'Não informado'}\n`;
+            if (employment === 'carteira_assinada' && employmentTime) {
+                message += `*Tempo de Carteira:* ${employmentTime}\n`;
+            }
+            message += `*Renda Mensal:* ${income}\n`;
+            
+            if (employment === 'carteira_assinada' && usedFGTS) {
+                message += `*Usou FGTS:* ${fgtsMap[usedFGTS] || 'Não informado'}\n`;
+            }
+            
+            message += `*Interesse em Avaliação:* ${yesNoMap[interestEvaluation] || 'Não informado'}\n`;
+            message += `*Possui Imóvel:* ${yesNoMap[hasProperty] || 'Não informado'}\n`;
+            message += `*Necessidades Especiais na Família:* ${yesNoMap[specialNeeds] || 'Não informado'}\n\n`;
+            
+            message += `*Casa dos Sonhos:*\n${dreamHouse.substring(0, 200)}${dreamHouse.length > 200 ? '...' : ''}\n\n`;
+            message += `*Localização Desejada:* ${location}\n`;
+            message += `*Profissão:* ${work}\n`;
+            message += `*Tamanho da Família:* ${familySize} pessoa(s)\n\n`;
+            
+            message += `_Esta é uma pesquisa realizada para entender melhor as necessidades habitacionais._`;
+            
+            // Codificar a mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Criar link do WhatsApp
+            const whatsappUrl = `https://wa.me/55${cleanPhone}?text=${encodedMessage}`;
+            
+            // Abrir WhatsApp em nova aba
+            window.open(whatsappUrl, '_blank');
+            
+            showMessage("Abrindo WhatsApp com o resumo da pesquisa...", "success");
+        }
+
         // Exportar dados para JSON
         async function exportToJSON() {
             const data = await getAllData();
@@ -1246,9 +1547,10 @@
             
             // Definir cabeçalhos
             const headers = [
-                "ID", "Nome", "Telefone", "CPF", "Usou FGTS", "Interesse Avaliação",
-                "Tem Imóvel", "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos",
-                "Localização", "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
+                "ID", "Nome", "Telefone", "CPF", "Situação Profissional", "Tempo Carteira", 
+                "Usou FGTS", "Interesse Avaliação", "Tem Imóvel", "Necessidades Especiais",
+                "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos", "Localização", 
+                "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
             ];
             
             // Converter dados para linhas CSV
@@ -1257,9 +1559,12 @@
                 `"${item.name}"`,
                 `"${item.phone}"`,
                 `"${item.cpf || ''}"`,
-                `"${item.usedFGTS}"`,
+                `"${item.employment}"`,
+                `"${item.employmentTime || ''}"`,
+                `"${item.usedFGTS || ''}"`,
                 `"${item.interestEvaluation}"`,
                 `"${item.hasProperty}"`,
+                `"${item.specialNeeds}"`,
                 `"${item.knowsWithout || ''}"`,
                 `"${item.knowsPhone || ''}"`,
                 `"${item.dreamHouse.replace(/"/g, '""')}"`,
@@ -1294,9 +1599,10 @@
             const data = await getAllData();
             
             const headers = [
-                "ID", "Nome", "Telefone", "CPF", "Usou FGTS", "Interesse Avaliação",
-                "Tem Imóvel", "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos",
-                "Localização", "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
+                "ID", "Nome", "Telefone", "CPF", "Situação Profissional", "Tempo Carteira", 
+                "Usou FGTS", "Interesse Avaliação", "Tem Imóvel", "Necessidades Especiais",
+                "Conhece Alguém Sem", "Telefone Conhecido", "Casa dos Sonhos", "Localização", 
+                "Renda", "Trabalho", "Tamanho Família", "Família", "Sobre"
             ];
             
             const rows = data.map(item => [
@@ -1304,9 +1610,12 @@
                 item.name,
                 item.phone,
                 item.cpf || '',
-                item.usedFGTS,
+                item.employment,
+                item.employmentTime || '',
+                item.usedFGTS || '',
                 item.interestEvaluation,
                 item.hasProperty,
+                item.specialNeeds,
                 item.knowsWithout || '',
                 item.knowsPhone || '',
                 item.dreamHouse,
@@ -1361,6 +1670,8 @@
             const withProperty = data.filter(item => item.hasProperty === 'sim').length;
             const usedFGTS = data.filter(item => item.usedFGTS === 'sim').length;
             const interestEvaluation = data.filter(item => item.interestEvaluation === 'sim').length;
+            const specialNeeds = data.filter(item => item.specialNeeds === 'sim').length;
+            const carteiraAssinada = data.filter(item => item.employment === 'carteira_assinada').length;
             
             let pdfContent = `
                 <html>
@@ -1404,6 +1715,14 @@
                                 <div class="stat-value">${interestEvaluation}</div>
                                 <div class="stat-label">Interesse em avaliação</div>
                             </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${specialNeeds}</div>
+                                <div class="stat-label">Com necessidades especiais</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${carteiraAssinada}</div>
+                                <div class="stat-label">Com carteira assinada</div>
+                            </div>
                         </div>
                     </div>
                     
@@ -1413,22 +1732,42 @@
                             <th>Nome</th>
                             <th>Telefone</th>
                             <th>CPF</th>
+                            <th>Situação Profissional</th>
+                            <th>Tempo Carteira</th>
                             <th>Usou FGTS</th>
                             <th>Interesse Avaliação</th>
                             <th>Tem Imóvel</th>
+                            <th>Necessidades Especiais</th>
                             <th>Renda</th>
                         </tr>
             `;
             
             data.forEach(item => {
+                // Mapear valores para textos mais amigáveis
+                const employmentMap = {
+                    'carteira_assinada': 'Carteira Assinada',
+                    'autonomo': 'Autônomo',
+                    'servidor_publico': 'Servidor Público',
+                    'empresario': 'Empresário'
+                };
+                
+                const fgtsMap = {
+                    'sim': 'Sim',
+                    'nao': 'Não',
+                    'nao_sei': 'Não sabe'
+                };
+                
                 pdfContent += `
                     <tr>
                         <td>${item.name}</td>
                         <td>${item.phone}</td>
                         <td>${item.cpf || 'Não informado'}</td>
-                        <td>${item.usedFGTS === 'sim' ? 'Sim' : item.usedFGTS === 'nao' ? 'Não' : 'Não sabe'}</td>
+                        <td>${employmentMap[item.employment] || item.employment}</td>
+                        <td>${item.employmentTime || '-'}</td>
+                        <td>${fgtsMap[item.usedFGTS] || item.usedFGTS || '-'}</td>
                         <td>${item.interestEvaluation === 'sim' ? 'Sim' : 'Não'}</td>
                         <td>${item.hasProperty === 'sim' ? 'Sim' : 'Não'}</td>
+                        <td>${item.specialNeeds === 'sim' ? 'Sim' : 'Não'}</td>
                         <td>${item.income}</td>
                     </tr>
                 `;
@@ -1523,14 +1862,45 @@
                 e.target.value = formatCurrency(value);
             });
             
-            // Configurar evento para mostrar/ocultar CPF baseado no interesse em avaliação
+            // Configurar eventos para mostrar/ocultar campos condicionais
+            document.querySelectorAll('input[name="employment"]').forEach(radio => {
+                radio.addEventListener('change', toggleEmploymentFields);
+            });
+            
             document.querySelectorAll('input[name="interestEvaluation"]').forEach(radio => {
                 radio.addEventListener('change', toggleCPFField);
             });
             
+            // Configurar botão do WhatsApp
+            document.getElementById('send-whatsapp').addEventListener('click', sendWhatsApp);
+            
             // Configurar envio do formulário
             document.getElementById('research-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                
+                // Validar situação profissional
+                const employment = document.querySelector('input[name="employment"]:checked');
+                if (!employment) {
+                    showMessage("Por favor, selecione sua situação profissional.", "error");
+                    return;
+                }
+                
+                // Validar tempo de carteira se for carteira assinada
+                if (employment.value === 'carteira_assinada') {
+                    const employmentTime = document.getElementById('employmentTime').value.trim();
+                    if (!employmentTime) {
+                        showMessage("Por favor, informe o tempo de carteira assinada.", "error");
+                        document.getElementById('employmentTime').focus();
+                        return;
+                    }
+                    
+                    // Validar FGTS se for carteira assinada
+                    const usedFGTS = document.querySelector('input[name="usedFGTS"]:checked');
+                    if (!usedFGTS) {
+                        showMessage("Por favor, informe se já utilizou o FGTS.", "error");
+                        return;
+                    }
+                }
                 
                 // Validar se CPF é necessário e foi preenchido
                 const interestEvaluation = document.querySelector('input[name="interestEvaluation"]:checked');
@@ -1552,14 +1922,24 @@
                     }
                 }
                 
+                // Validar necessidades especiais
+                const specialNeeds = document.querySelector('input[name="specialNeeds"]:checked');
+                if (!specialNeeds) {
+                    showMessage("Por favor, informe se há necessidades especiais na família.", "error");
+                    return;
+                }
+                
                 // Coletar dados do formulário
                 const formData = {
                     name: document.getElementById('name').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
                     cpf: cpfInput.value.trim(),
-                    usedFGTS: document.querySelector('input[name="usedFGTS"]:checked').value,
+                    employment: employment.value,
+                    employmentTime: employment.value === 'carteira_assinada' ? document.getElementById('employmentTime').value.trim() : '',
+                    usedFGTS: employment.value === 'carteira_assinada' ? document.querySelector('input[name="usedFGTS"]:checked')?.value : '',
                     interestEvaluation: interestEvaluation.value,
                     hasProperty: document.querySelector('input[name="hasProperty"]:checked').value,
+                    specialNeeds: specialNeeds.value,
                     knowsWithout: document.getElementById('knowsWithout').value.trim(),
                     knowsPhone: document.getElementById('knowsPhone').value.trim(),
                     dreamHouse: document.getElementById('dreamHouse').value.trim(),
@@ -1582,8 +1962,13 @@
                     // Limpar formulário
                     e.target.reset();
                     
-                    // Resetar campo CPF
+                    // Resetar campos condicionais
+                    const employmentTimeContainer = document.getElementById('employment-time-container');
+                    const fgtsContainer = document.getElementById('fgts-container');
                     const cpfContainer = document.getElementById('cpf-container');
+                    
+                    employmentTimeContainer.classList.add('hidden');
+                    fgtsContainer.classList.add('hidden');
                     cpfContainer.classList.add('hidden');
                     
                     // Atualizar a lista de dados e estatísticas
@@ -1608,9 +1993,16 @@
             document.getElementById('clear-form').addEventListener('click', () => {
                 if (confirm("Tem certeza que deseja limpar todos os campos do formulário?")) {
                     document.getElementById('research-form').reset();
-                    // Esconder campo CPF ao limpar
+                    
+                    // Esconder campos condicionais ao limpar
+                    const employmentTimeContainer = document.getElementById('employment-time-container');
+                    const fgtsContainer = document.getElementById('fgts-container');
                     const cpfContainer = document.getElementById('cpf-container');
+                    
+                    employmentTimeContainer.classList.add('hidden');
+                    fgtsContainer.classList.add('hidden');
                     cpfContainer.classList.add('hidden');
+                    
                     showMessage("Formulário limpo com sucesso!", "success");
                 }
             });
